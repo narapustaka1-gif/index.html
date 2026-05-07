@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nara Coffee</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:#f7f4ef;
+color:#1d1d1d;
+overflow-x:hidden;
+}
+
+header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+padding:22px 8%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(255,255,255,0.8);
+backdrop-filter:blur(12px);
+z-index:999;
+box-shadow:0 5px 20px rgba(0,0,0,0.05);
+}
+
+.logo{
+font-size:30px;
+font-weight:700;
+color:#6d4c41;
+}
+
+nav{
+display:flex;
+gap:25px;
+}
+
+nav a{
+text-decoration:none;
+color:#333;
+font-weight:500;
+transition:0.3s;
+}
+
+nav a:hover{
+color:#a67c52;
+}
+
+.hero{
+min-height:100vh;
+display:flex;
+align-items:center;
+padding:120px 8%;
+background:
+linear-gradient(rgba(20,15,10,0.55),rgba(20,15,10,0.55)),
+url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1600&auto=format&fit=crop');
+background-size:cover;
+background-position:center;
+color:white;
+}
+
+.hero-content{
+max-width:700px;
+animation:fadeUp 1.2s ease;
+}
+
+.hero h1{
+font-size:clamp(55px,8vw,100px);
+line-height:1;
+margin-bottom:25px;
+}
+
+.hero p{
+font-size:18px;
+line-height:1.9;
+margin-bottom:35px;
+color:#f1f1f1;
+}
+
+.btn{
+display:inline-block;
+padding:16px 34px;
+background:#a67c52;
+color:white;
+text-decoration:none;
+border-radius:14px;
+font-weight:600;
+transition:0.3s;
+}
+
+.btn:hover{
+transform:translateY(-5px);
+}
+
+section{
+padding:110px 8%;
+}
+
+.title{
+font-size:clamp(42px,6vw,65px);
+margin-bottom:20px;
+color:#6d4c41;
+}
+
+.desc{
+font-size:18px;
+line-height:1.9;
+max-width:850px;
+color:#555;
+}
+
+.about-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:60px;
+margin-top:60px;
+align-items:center;
+}
+
+.about-grid img{
+width:100%;
+height:550px;
+object-fit:cover;
+border-radius:28px;
+box-shadow:0 20px 50px rgba(0,0,0,0.12);
+}
+
+.menu-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:28px;
+margin-top:60px;
+}
+
+.menu-card{
+background:white;
+padding:25px;
+border-radius:28px;
+box-shadow:0 15px 40px rgba(0,0,0,0.06);
+transition:0.4s;
+overflow:hidden;
+}
+
+.menu-card:hover{
+transform:translateY(-10px);
+}
+
+.menu-card img{
+width:100%;
+height:240px;
+object-fit:cover;
+border-radius:20px;
+margin-bottom:18px;
+}
+
+.menu-card h3{
+font-size:28px;
+margin-bottom:10px;
+color:#6d4c41;
+}
+
+.menu-card p{
+line-height:1.8;
+color:#666;
+margin-bottom:15px;
+}
+
+.price{
+font-weight:700;
+font-size:22px;
+color:#a67c52;
+}
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:22px;
+margin-top:60px;
+}
+
+.gallery img{
+width:100%;
+height:280px;
+object-fit:cover;
+border-radius:24px;
+transition:0.4s;
+}
+
+.gallery img:hover{
+transform:scale(1.03);
+}
+
+.contact-box{
+background:white;
+padding:45px;
+border-radius:30px;
+margin-top:60px;
+box-shadow:0 20px 50px rgba(0,0,0,0.08);
+}
+
+.contact-box p{
+font-size:18px;
+line-height:2;
+color:#555;
+}
+
+footer{
+background:#4e342e;
+color:white;
+padding:45px;
+text-align:center;
+}
+
+.float-btn{
+position:fixed;
+bottom:25px;
+right:25px;
+background:#25d366;
+color:white;
+padding:18px 24px;
+border-radius:100px;
+text-decoration:none;
+font-weight:600;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+animation:float 3s ease-in-out infinite;
+z-index:999;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(50px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@keyframes float{
+0%{transform:translateY(0px);} 
+50%{transform:translateY(-10px);} 
+100%{transform:translateY(0px);} 
+}
+
+@media(max-width:900px){
+
+header{
+flex-direction:column;
+gap:18px;
+}
+
+.about-grid{
+grid-template-columns:1fr;
+}
+
+.hero h1{
+font-size:60px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">Nara Coffee</div>
+
+<nav>
+<a href="#tentang">Tentang</a>
+<a href="#menu">Menu</a>
+<a href="#gallery">Gallery</a>
+<a href="#kontak">Kontak</a>
+</nav>
+</header>
+
+<section class="hero">
+<div class="hero-content">
+<h1>Nikmati Kopi dengan Suasana Premium</h1>
+
+<p>
+Nara Coffee menghadirkan pengalaman ngopi modern dengan suasana aesthetic, nyaman, dan cocok untuk bekerja maupun bersantai.
+</p>
+
+<a href="#menu" class="btn">Lihat Menu</a>
+</div>
+</section>
+
+<section id="tentang">
+<h2 class="title">Tentang Cafe</h2>
+
+<p class="desc">
+Nara Coffee adalah cafe modern dengan konsep minimalis aesthetic yang menghadirkan kopi berkualitas, makanan premium, dan suasana nyaman untuk semua kalangan.
+</p>
+
+<div class="about-grid">
+<img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1200&auto=format&fit=crop">
+
+<div>
+<h2 class="title">Suasana Modern</h2>
+<p class="desc">
+Interior modern dengan nuansa hangat membuat pengalaman nongkrong lebih nyaman dan instagramable.
+</p>
+</div>
+</div>
+</section>
+
+<section id="menu">
+<h2 class="title">Menu Favorit</h2>
+
+<div class="menu-grid">
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=1200&auto=format&fit=crop">
+<h3>Kopi Susu Aren</h3>
+<p>Kopi creamy dengan gula aren premium khas Nara Coffee.</p>
+<div class="price">Rp18.000</div>
+</div>
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200&auto=format&fit=crop">
+<h3>Cappuccino</h3>
+<p>Perpaduan espresso dan susu dengan foam lembut.</p>
+<div class="price">Rp22.000</div>
+</div>
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?q=80&w=1200&auto=format&fit=crop">
+<h3>Matcha Latte</h3>
+<p>Minuman matcha premium dengan rasa creamy dan segar.</p>
+<div class="price">Rp20.000</div>
+</div>
+
+<div class="menu-card">
+<img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop">
+<h3>Croissant</h3>
+<p>Pastry buttery lembut cocok untuk teman ngopi.</p>
+<div class="price">Rp15.000</div>
+</div>
+
+</div>
+</section>
+
+<section id="gallery">
+<h2 class="title">Cafe Gallery</h2>
+
+<div class="gallery">
+<img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=1200&auto=format&fit=crop">
+<img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=1200&auto=format&fit=crop">
+<img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?q=80&w=1200&auto=format&fit=crop">
+</div>
+</section>
+
+<section id="kontak">
+<h2 class="title">Kontak</h2>
+
+<div class="contact-box">
+<p>
+📍 Bogor, Jawa Barat
+<br><br>
+📞 0821-3087-2054
+<br><br>
+📸 Instagram: @naracoffee
+<br><br>
+🕒 Setiap Hari • 10.00 - 23.00
+</p>
+</div>
+</section>
+
+<footer>
+<p>© 2026 Nara Coffee — All Rights Reserved.</p>
+</footer>
+
+<a href="https://wa.me/6282130872054" target="_blank" class="float-btn">
+Chat WhatsApp
+</a>
+
+</body>
+</html>
