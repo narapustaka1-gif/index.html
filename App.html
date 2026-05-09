@@ -1,0 +1,384 @@
+import { useState, useEffect } from 'react';
+import './App.css';
+
+// ========== GOOGLE SHEETS API ENDPOINT ==========
+const ORDERS_API_URL = "https://script.google.com/macros/s/AKfycbwT7cPfLbEP4aiHKXRdTVvWnxZRG9JT471oNO59uI1HkDHK5ndQXJKPFUrySh3PZ8Fb/exec";
+
+// ========== DATA PRODUK DENGAN GAMBAR ASLI ==========
+const products = [
+  { id: 1, name: "Espresso", price: 35000, imageUrl: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&h=200&fit=crop", desc: "Double shot, klasik atau single-origin" },
+  { id: 2, name: "Cappuccino", price: 40000, imageUrl: "https://images.unsplash.com/photo-1534778101976-62847782c2e1?w=200&h=200&fit=crop", desc: "Lembut, medium, rasa seimbang" },
+  { id: 3, name: "Flat White", price: 45000, imageUrl: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&h=200&fit=crop", desc: "Kopi kuat, susu lembut" },
+  { id: 4, name: "Americano", price: 35000, imageUrl: "https://images.unsplash.com/photo-1559496417-3f1f3ffa5c02?w=200&h=200&fit=crop", desc: "Tegas, halus, long black" },
+  { id: 5, name: "Latte", price: 45000, imageUrl: "https://images.unsplash.com/photo-1570968915860-54d5c92fa5f7?w=200&h=200&fit=crop", desc: "Klasik / Rasa caramel, vanilla" },
+  { id: 6, name: "Chocolate Cupcake", price: 25000, imageUrl: "https://images.unsplash.com/photo-1587668178277-295251f900ce?w=200&h=200&fit=crop", desc: "Frosting coklat kaya rasa" },
+  { id: 7, name: "Red Velvet", price: 27000, imageUrl: "https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?w=200&h=200&fit=crop", desc: "Frosting cream cheese" },
+  { id: 8, name: "Croissant", price: 22000, imageUrl: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&h=200&fit=crop", desc: "Buttery, renyah, dipanggang segar" },
+  { id: 9, name: "Avocado Toast", price: 42000, imageUrl: "https://images.unsplash.com/photo-1603046891744-1f76eb10eecf?w=200&h=200&fit=crop", desc: "Alpukat segar di atas sourdough" },
+  { id: 10, name: "Matcha Latte", price: 48000, imageUrl: "https://images.unsplash.com/photo-1536935338788-846bb9981813?w=200&h=200&fit=crop", desc: "Matcha premium dengan susu" },
+  { id: 11, name: "Cheesecake", price: 32000, imageUrl: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=200&h=200&fit=crop", desc: "Cheesecake lembut dengan topping stroberi" },
+];
+
+// ========== DATA GALERI ==========
+const galleryImages = [
+  { name: "Kedai Kopi", imageUrl: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400&h=300&fit=crop" },
+  { name: "Croissant Segar", imageUrl: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop" },
+  { name: "Cupcake Display", imageUrl: "https://images.unsplash.com/photo-1587668178277-295251f900ce?w=400&h=300&fit=crop" },
+  { name: "Roti Alpukat", imageUrl: "https://images.unsplash.com/photo-1603046891744-1f76eb10eecf?w=400&h=300&fit=crop" },
+  { name: "Matcha Latte", imageUrl: "https://images.unsplash.com/photo-1536935338788-846bb9981813?w=400&h=300&fit=crop" },
+  { name: "Cheesecake", imageUrl: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400&h=300&fit=crop" },
+  { name: "Espresso Bar", imageUrl: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&h=300&fit=crop" },
+  { name: "Suasana Cafe", imageUrl: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&h=300&fit=crop" },
+];
+
+function App() {
+  const [quantities, setQuantities] = useState({});
+  const [activeTab, setActiveTab] = useState("home");
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [ratings, setRatings] = useState([]);
+  const [ratingModal, setRatingModal] = useState(false);
+  const [selectedRating, setSelectedRating] = useState(0);
+  const [reviewText, setReviewText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const [checkoutData, setCheckoutData] = useState({
+    name: "",
+    meja: "",
+    catatan: "",
+    metode: "kasir"
+  });
+
+  // Load ratings dari localStorage
+  useEffect(() => {
+    const savedRatings = localStorage.getItem('cafeRatings');
+    if (savedRatings) setRatings(JSON.parse(savedRatings));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('cafeRatings', JSON.stringify(ratings));
+  }, [ratings]);
+
+  const updateQuantity = (id, delta) => {
+    setQuantities(prev => {
+      const current = prev[id] || 0;
+      const newQty = current + delta;
+      if (newQty <= 0) {
+        const { [id]: _, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [id]: newQty };
+    });
+  };
+
+  const totalPrice = Object.entries(quantities).reduce((sum, [id, qty]) => {
+    const product = products.find(p => p.id === parseInt(id));
+    return sum + (product?.price || 0) * qty;
+  }, 0);
+
+  const hasItems = totalPrice > 0;
+
+  const sendOrderToSheet = async (orderData) => {
+    try {
+      await fetch(ORDERS_API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData)
+      });
+      console.log("✅ Pesanan terkirim ke Google Sheets:", orderData.orderId);
+      return true;
+    } catch (error) {
+      console.error("❌ Gagal mengirim pesanan:", error);
+      return false;
+    }
+  };
+
+  const handleCheckoutSubmit = async (e) => {
+    e.preventDefault();
+    if (!checkoutData.name) return alert("Nama wajib diisi!");
+    if (!checkoutData.meja) return alert("Nomor meja wajib diisi!");
+    
+    setIsSubmitting(true);
+    
+    const orderId = "ORD" + Date.now() + Math.floor(Math.random() * 10000);
+    const orderItems = Object.entries(quantities).map(([id, qty]) => {
+      const product = products.find(p => p.id === parseInt(id));
+      return `${product?.name} (${qty})`;
+    }).join(", ");
+    
+    const orderData = {
+      orderId: orderId,
+      customerName: checkoutData.name,
+      tableNumber: checkoutData.meja,
+      notes: checkoutData.catatan || "-",
+      items: orderItems,
+      total: totalPrice,
+      paymentMethod: checkoutData.metode === "kasir" ? "Bayar di Kasir" : "Bayar di Meja",
+      status: "PENDING",
+      createdAt: new Date().toLocaleString('id-ID')
+    };
+    
+    await sendOrderToSheet(orderData);
+    
+    const metodeText = checkoutData.metode === "kasir" 
+      ? "Bayar di Kasir - Silakan datang ke kasir untuk membayar" 
+      : "Bayar di Meja - Pelayan akan datang membawakan invoice, wajib bayar langsung";
+    
+    alert(`✅ Pesanan ${orderId} berhasil!\n\n${metodeText}\n\n${orderItems}\nTotal: Rp ${totalPrice.toLocaleString()}`);
+    
+    setQuantities({});
+    setCheckoutData({ name: "", meja: "", catatan: "", metode: "kasir" });
+    setShowCheckout(false);
+    setActiveTab("home");
+    setIsSubmitting(false);
+  };
+
+  const submitRating = () => {
+    if (selectedRating === 0) return alert("Pilih bintang terlebih dahulu!");
+    const newRating = {
+      id: Date.now(),
+      name: "Pelanggan",
+      stars: selectedRating,
+      comment: reviewText || "-",
+      tanggal: new Date().toLocaleString('id-ID'),
+    };
+    setRatings([newRating, ...ratings]);
+    setRatingModal(false);
+    setSelectedRating(0);
+    setReviewText("");
+    alert("Terima kasih atas ratingnya! ❤️");
+  };
+
+  const avgRating = ratings.length > 0 
+    ? (ratings.reduce((sum, r) => sum + r.stars, 0) / ratings.length).toFixed(1)
+    : 0;
+
+  return (
+    <div className="app">
+      {/* HEADER */}
+      <header className="header">
+        <div className="logo">
+          <h1>☕ <span>Cafe Bahagia</span></h1>
+        </div>
+        <nav className="nav">
+          <button className={activeTab === 'home' ? 'nav-active' : ''} onClick={() => { setActiveTab('home'); setShowCheckout(false); }}>Beranda</button>
+          <button className={activeTab === 'menu' ? 'nav-active' : ''} onClick={() => { setActiveTab('menu'); setShowCheckout(false); }}>Menu</button>
+          <button className={activeTab === 'reviews' ? 'nav-active' : ''} onClick={() => { setActiveTab('reviews'); setShowCheckout(false); }}>Ulasan</button>
+          <button className={activeTab === 'gallery' ? 'nav-active' : ''} onClick={() => { setActiveTab('gallery'); setShowCheckout(false); }}>Galeri</button>
+          <button className={activeTab === 'contact' ? 'nav-active' : ''} onClick={() => { setActiveTab('contact'); setShowCheckout(false); }}>Lokasi</button>
+          <button className="order-nav" onClick={() => { setActiveTab('menu'); setShowCheckout(false); }}>Pesan Online</button>
+        </nav>
+      </header>
+
+      {/* HOME TAB */}
+      {activeTab === 'home' && !showCheckout && (
+        <>
+          <section className="hero">
+            <div className="hero-overlay"></div>
+            <div className="hero-content">
+              <h2>Kopi Segar & Pastry, Setiap Hari</h2>
+              <p>Tempat nyaman di mana espresso spesial bertemu dengan croissant hangat dan renyah. Pesan dari sekarang, hindari antrian, dan nikmati momennya.</p>
+              <div className="hero-buttons">
+                <button className="btn-primary" onClick={() => setActiveTab('menu')}>Pesan Online</button>
+                <button className="btn-secondary" onClick={() => setActiveTab('menu')}>Lihat Menu</button>
+              </div>
+              <div className="stats">
+                <div>⭐ {ratings.length}+ ulasan</div>
+                <div>🌱 Bahan Lokal</div>
+                <div>⚡ Siap 15 Menit</div>
+              </div>
+            </div>
+          </section>
+          <section className="features">
+            <div className="feature"><div className="feature-icon">☕</div><h3>Kopi Spesial</h3><p>Roaster premium • 100% Arabika</p></div>
+            <div className="feature"><div className="feature-icon">🥐</div><h3>Pagi Bakery</h3><p>Croissant, danish, tart dipanggang sendiri</p></div>
+            <div className="feature"><div className="feature-icon">🍳</div><h3>Sarapan Seharian</h3><p>Tersedia hingga tutup</p></div>
+            <div className="feature"><div className="feature-icon">⚡</div><h3>Ambil Cepat</h3><p>Pesan dari awal, siap 15 menit</p></div>
+          </section>
+        </>
+      )}
+
+      {/* MENU TAB */}
+      {activeTab === 'menu' && !showCheckout && (
+        <section className="menu-section">
+          <h2 className="section-title">🍽️ Menu Unggulan Kami</h2>
+          <div className="menu-grid">
+            {products.map(p => {
+              const qty = quantities[p.id] || 0;
+              return (
+                <div key={p.id} className="menu-card">
+                  <div className="menu-img">
+                    <img src={p.imageUrl} alt={p.name} loading="lazy" />
+                  </div>
+                  <div className="menu-info">
+                    <h3>{p.name}</h3>
+                    <p className="menu-desc">{p.desc}</p>
+                    <div className="menu-price">Rp {p.price.toLocaleString()}</div>
+                    <div className="qty-control">
+                      <button className="qty-btn" onClick={() => updateQuantity(p.id, -1)} disabled={isSubmitting}>-</button>
+                      <span className="qty-number">{qty}</span>
+                      <button className="qty-btn" onClick={() => updateQuantity(p.id, 1)} disabled={isSubmitting}>+</button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          
+          <div className="total-section">
+            <div className="total-card">
+              <div className="total-text">
+                <span>Total Pesanan:</span>
+                <span className="total-amount">Rp {totalPrice.toLocaleString()}</span>
+              </div>
+              <button className="pesan-btn" onClick={() => setShowCheckout(true)} disabled={!hasItems || isSubmitting}>
+                📝 Pesan Sekarang
+              </button>
+              {!hasItems && <p className="empty-cart-hint">Tambahkan pesanan terlebih dahulu</p>}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* CHECKOUT PAGE */}
+      {showCheckout && (
+        <section className="checkout-section">
+          <div className="checkout-container">
+            <button className="back-btn" onClick={() => setShowCheckout(false)} disabled={isSubmitting}>← Kembali ke Menu</button>
+            <h2 className="section-title">📋 Lengkapi Pesanan Anda</h2>
+            
+            <div className="order-summary">
+              <h3>Ringkasan Pesanan:</h3>
+              {Object.entries(quantities).map(([id, qty]) => {
+                const product = products.find(p => p.id === parseInt(id));
+                return (
+                  <div key={id} className="summary-item">
+                    <span>{product?.name} x{qty}</span>
+                    <span>Rp {((product?.price || 0) * qty).toLocaleString()}</span>
+                  </div>
+                );
+              })}
+              <div className="summary-total">Total: Rp {totalPrice.toLocaleString()}</div>
+            </div>
+
+            <form onSubmit={handleCheckoutSubmit} className="checkout-form">
+              <div className="form-group">
+                <label>Nama Anda *</label>
+                <input type="text" placeholder="Masukkan nama Anda" value={checkoutData.name} onChange={(e) => setCheckoutData({...checkoutData, name: e.target.value})} required disabled={isSubmitting} />
+              </div>
+              <div className="form-group">
+                <label>Nomor Meja *</label>
+                <input type="text" placeholder="Contoh: Meja 5" value={checkoutData.meja} onChange={(e) => setCheckoutData({...checkoutData, meja: e.target.value})} required disabled={isSubmitting} />
+              </div>
+              <div className="form-group">
+                <label>Catatan (opsional)</label>
+                <textarea placeholder="Contoh: kopinya jangan pakai gula, pisangnya yang matang" value={checkoutData.catatan} onChange={(e) => setCheckoutData({...checkoutData, catatan: e.target.value})} rows="2" disabled={isSubmitting} />
+              </div>
+              
+              <div className="form-group">
+                <label>Metode Pembayaran *</label>
+                <div className="metode-options">
+                  <label className={`metode-card ${checkoutData.metode === 'kasir' ? 'active' : ''}`}>
+                    <input type="radio" name="metode" value="kasir" checked={checkoutData.metode === 'kasir'} onChange={(e) => setCheckoutData({...checkoutData, metode: e.target.value})} disabled={isSubmitting} />
+                    <div className="metode-title">💰 Bayar di Kasir</div>
+                    <div className="metode-desc">Silakan datang ke kasir untuk membayar sebelum pesanan diproses</div>
+                  </label>
+                  <label className={`metode-card ${checkoutData.metode === 'meja' ? 'active' : ''}`}>
+                    <input type="radio" name="metode" value="meja" checked={checkoutData.metode === 'meja'} onChange={(e) => setCheckoutData({...checkoutData, metode: e.target.value})} disabled={isSubmitting} />
+                    <div className="metode-title">🍽️ Bayar di Meja</div>
+                    <div className="metode-desc">Pelayan akan membawa invoice, harap bayar langsung di tempat</div>
+                  </label>
+                </div>
+              </div>
+              
+              <button type="submit" className="submit-order-btn" disabled={isSubmitting}>
+                {isSubmitting ? "Memproses..." : "✅ Konfirmasi Pesanan"}
+              </button>
+            </form>
+          </div>
+        </section>
+      )}
+
+      {/* REVIEWS TAB */}
+      {activeTab === 'reviews' && !showCheckout && (
+        <section className="reviews-section">
+          <h2 className="section-title">⭐ Ulasan Pelanggan</h2>
+          <div className="rating-summary">
+            <div className="avg-rating">{avgRating}</div>
+            <div className="stars">★★★★★</div>
+            <div className="review-count">dari {ratings.length} ulasan</div>
+          </div>
+          <div className="reviews-grid">
+            {ratings.length === 0 && <p style={{textAlign:'center', gridColumn:'1/-1'}}>Belum ada ulasan. Jadilah yang pertama!</p>}
+            {ratings.map(r => (
+              <div key={r.id} className="review-card">
+                <div className="review-stars">{'⭐'.repeat(r.stars)}</div>
+                <p className="review-comment">{r.comment}</p>
+                <div className="review-name">{r.name}</div>
+                <div className="review-date">{r.tanggal}</div>
+              </div>
+            ))}
+          </div>
+          <div className="rating-btn-container">
+            <button className="btn-primary" onClick={() => setRatingModal(true)}>Beri Ulasan</button>
+          </div>
+        </section>
+      )}
+
+      {/* GALLERY TAB */}
+      {activeTab === 'gallery' && !showCheckout && (
+        <section className="gallery-section">
+          <h2 className="section-title">📸 Galeri Cafe</h2>
+          <div className="gallery-grid">
+            {galleryImages.map((item, i) => (
+              <div key={i} className="gallery-item">
+                <img src={item.imageUrl} alt={item.name} loading="lazy" />
+                <div className="gallery-name">{item.name}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* CONTACT TAB */}
+      {activeTab === 'contact' && !showCheckout && (
+        <section className="contact-section">
+          <h2 className="section-title">📍 Lokasi & Kontak</h2>
+          <div className="contact-card">
+            <h3>☕ Cafe Bahagia</h3>
+            <p>Jl. Kopi No. 123, Bandung, Indonesia</p>
+            <p>📞 <a href="https://wa.me/628123456789">+62 812-3456-789 (WA)</a></p>
+            <p>📷 Instagram: @cafebahagia</p>
+            <p>✉️ Email: hello@cafebahagia.com</p>
+            <p>🕒 Buka setiap hari: 08:00 - 22:00</p>
+          </div>
+        </section>
+      )}
+
+      {/* MODAL RATING */}
+      {ratingModal && (
+        <>
+          <div className="modal-overlay" onClick={() => setRatingModal(false)}></div>
+          <div className="modal-rating">
+            <h3>⭐ Beri Rating Cafe</h3>
+            <div className="star-selector">
+              {[1,2,3,4,5].map(star => (
+                <span key={star} className={`star ${selectedRating >= star ? 'active' : ''}`} onClick={() => setSelectedRating(star)}>⭐</span>
+              ))}
+            </div>
+            <textarea placeholder="Tulis komentar Anda..." value={reviewText} onChange={(e) => setReviewText(e.target.value)} rows="3" />
+            <button className="btn-primary" onClick={submitRating}>Kirim Rating</button>
+            <button className="close-modal" onClick={() => setRatingModal(false)}>Batal</button>
+          </div>
+        </>
+      )}
+
+      {/* FOOTER */}
+      <footer className="footer">
+        <p>© 2025 Cafe Bahagia. Seluruh hak cipta dilindungi. Dibuat oleh <strong>Deby Verona</strong></p>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
