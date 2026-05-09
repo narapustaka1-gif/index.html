@@ -1,396 +1,171 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nara Coffee</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-scroll-behavior:smooth;
-}
-
-body{
-background:#f7f4ef;
-color:#1d1d1d;
-overflow-x:hidden;
-}
-
-header{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-padding:22px 8%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:rgba(255,255,255,0.8);
-backdrop-filter:blur(12px);
-z-index:999;
-box-shadow:0 5px 20px rgba(0,0,0,0.05);
-}
-
-.logo{
-font-size:30px;
-font-weight:700;
-color:#6d4c41;
-}
-
-nav{
-display:flex;
-gap:25px;
-}
-
-nav a{
-text-decoration:none;
-color:#333;
-font-weight:500;
-transition:0.3s;
-}
-
-nav a:hover{
-color:#a67c52;
-}
-
-.hero{
-min-height:100vh;
-display:flex;
-align-items:center;
-padding:120px 8%;
-background:
-linear-gradient(rgba(20,15,10,0.55),rgba(20,15,10,0.55)),
-url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1600&auto=format&fit=crop');
-background-size:cover;
-background-position:center;
-color:white;
-}
-
-.hero-content{
-max-width:700px;
-animation:fadeUp 1.2s ease;
-}
-
-.hero h1{
-font-size:clamp(55px,8vw,100px);
-line-height:1;
-margin-bottom:25px;
-}
-
-.hero p{
-font-size:18px;
-line-height:1.9;
-margin-bottom:35px;
-color:#f1f1f1;
-}
-
-.btn{
-display:inline-block;
-padding:16px 34px;
-background:#a67c52;
-color:white;
-text-decoration:none;
-border-radius:14px;
-font-weight:600;
-transition:0.3s;
-}
-
-.btn:hover{
-transform:translateY(-5px);
-}
-
-section{
-padding:110px 8%;
-}
-
-.title{
-font-size:clamp(42px,6vw,65px);
-margin-bottom:20px;
-color:#6d4c41;
-}
-
-.desc{
-font-size:18px;
-line-height:1.9;
-max-width:850px;
-color:#555;
-}
-
-.about-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:60px;
-margin-top:60px;
-align-items:center;
-}
-
-.about-grid img{
-width:100%;
-height:550px;
-object-fit:cover;
-border-radius:28px;
-box-shadow:0 20px 50px rgba(0,0,0,0.12);
-}
-
-.menu-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:28px;
-margin-top:60px;
-}
-
-.menu-card{
-background:white;
-padding:25px;
-border-radius:28px;
-box-shadow:0 15px 40px rgba(0,0,0,0.06);
-transition:0.4s;
-overflow:hidden;
-}
-
-.menu-card:hover{
-transform:translateY(-10px);
-}
-
-.menu-card img{
-width:100%;
-height:240px;
-object-fit:cover;
-border-radius:20px;
-margin-bottom:18px;
-}
-
-.menu-card h3{
-font-size:28px;
-margin-bottom:10px;
-color:#6d4c41;
-}
-
-.menu-card p{
-line-height:1.8;
-color:#666;
-margin-bottom:15px;
-}
-
-.price{
-font-weight:700;
-font-size:22px;
-color:#a67c52;
-}
-
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:22px;
-margin-top:60px;
-}
-
-.gallery img{
-width:100%;
-height:280px;
-object-fit:cover;
-border-radius:24px;
-transition:0.4s;
-}
-
-.gallery img:hover{
-transform:scale(1.03);
-}
-
-.contact-box{
-background:white;
-padding:45px;
-border-radius:30px;
-margin-top:60px;
-box-shadow:0 20px 50px rgba(0,0,0,0.08);
-}
-
-.contact-box p{
-font-size:18px;
-line-height:2;
-color:#555;
-}
-
-footer{
-background:#4e342e;
-color:white;
-padding:45px;
-text-align:center;
-}
-
-.float-btn{
-position:fixed;
-bottom:25px;
-right:25px;
-background:#25d366;
-color:white;
-padding:18px 24px;
-border-radius:100px;
-text-decoration:none;
-font-weight:600;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-animation:float 3s ease-in-out infinite;
-z-index:999;
-}
-
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(50px);
-}
-
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-@keyframes float{
-0%{transform:translateY(0px);} 
-50%{transform:translateY(-10px);} 
-100%{transform:translateY(0px);} 
-}
-
-@media(max-width:900px){
-
-header{
-flex-direction:column;
-gap:18px;
-}
-
-.about-grid{
-grid-template-columns:1fr;
-}
-
-.hero h1{
-font-size:60px;
-}
-
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Cafe Bahagia - Pesan Online</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        body { background: linear-gradient(135deg, #fdf6e3, #ffe4c4, #ffd6a5); padding-bottom: 60px; }
+        .header { background: rgba(255,255,255,0.95); padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+        .logo h1 { font-size: 1.4rem; background: linear-gradient(135deg, #c47a2e, #e8a87c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .nav { display: flex; gap: 8px; flex-wrap: wrap; }
+        .nav button { background: none; border: none; padding: 6px 12px; font-weight: 500; border-radius: 30px; cursor: pointer; }
+        .nav-active { background: #c47a2e; color: white; }
+        .order-nav { background: linear-gradient(135deg, #c47a2e, #e8a87c); color: white; padding: 6px 16px; border-radius: 30px; }
+        .hero { background-image: url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&h=400&fit=crop'); background-size: cover; background-position: center; padding: 60px 20px; text-align: center; color: white; position: relative; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); }
+        .hero-content { position: relative; z-index: 2; }
+        .hero h2 { font-size: 1.6rem; margin-bottom: 12px; }
+        .btn-primary { background: linear-gradient(135deg, #c47a2e, #e8a87c); color: white; border: none; padding: 10px 24px; border-radius: 40px; font-weight: bold; margin-top: 12px; cursor: pointer; }
+        .section-title { text-align: center; font-size: 1.6rem; margin: 30px 0 20px; background: linear-gradient(135deg, #2c1810, #c47a2e); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; padding: 0 16px; max-width: 1000px; margin: 0 auto; }
+        .menu-card { background: white; border-radius: 24px; padding: 16px; display: flex; gap: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .menu-img { width: 80px; height: 80px; border-radius: 20px; overflow: hidden; }
+        .menu-img img { width: 100%; height: 100%; object-fit: cover; }
+        .menu-info { flex: 1; }
+        .menu-price { color: #c47a2e; font-weight: bold; margin: 8px 0; }
+        .qty-control { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+        .qty-btn { background: #e0e0e0; border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; }
+        .total-section { padding: 20px; max-width: 400px; margin: 0 auto; }
+        .total-card { background: white; border-radius: 28px; padding: 20px; text-align: center; }
+        .total-text { display: flex; justify-content: space-between; font-size: 1.2rem; margin-bottom: 16px; }
+        .total-amount { color: #c47a2e; font-weight: bold; }
+        .pesan-btn { background: linear-gradient(135deg, #c47a2e, #e8a87c); color: white; border: none; padding: 12px; border-radius: 40px; width: 100%; font-weight: bold; cursor: pointer; }
+        .checkout-section { padding: 20px; max-width: 500px; margin: 0 auto; }
+        .checkout-container { background: white; border-radius: 28px; padding: 24px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 24px; }
+        .metode-card { background: #f9f9f9; border: 2px solid #eee; border-radius: 20px; padding: 12px; margin-bottom: 10px; cursor: pointer; }
+        .metode-card.active { border-color: #c47a2e; background: #fff8f0; }
+        .submit-btn { background: #2e7d32; color: white; border: none; padding: 14px; border-radius: 40px; width: 100%; font-weight: bold; cursor: pointer; }
+        .footer { text-align: center; padding: 20px; background: rgba(255,255,255,0.9); margin-top: 30px; font-size: 0.8rem; }
+        .hidden { display: none; }
+        @media (max-width: 550px) { .menu-card { flex-direction: column; text-align: center; } .menu-img { width: 100%; height: 130px; } .qty-control { justify-content: center; } }
+    </style>
 </head>
 <body>
 
-<header>
-<div class="logo">Nara Coffee</div>
-
-<nav>
-<a href="#tentang">Tentang</a>
-<a href="#menu">Menu</a>
-<a href="#gallery">Gallery</a>
-<a href="#kontak">Kontak</a>
-</nav>
-</header>
-
-<section class="hero">
-<div class="hero-content">
-<h1>Nikmati Kopi dengan Suasana Premium</h1>
-
-<p>
-Nara Coffee menghadirkan pengalaman ngopi modern dengan suasana aesthetic, nyaman, dan cocok untuk bekerja maupun bersantai.
-</p>
-
-<a href="#menu" class="btn">Lihat Menu</a>
-</div>
-</section>
-
-<section id="tentang">
-<h2 class="title">Tentang Cafe</h2>
-
-<p class="desc">
-Nara Coffee adalah cafe modern dengan konsep minimalis aesthetic yang menghadirkan kopi berkualitas, makanan premium, dan suasana nyaman untuk semua kalangan.
-</p>
-
-<div class="about-grid">
-<img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1200&auto=format&fit=crop">
-
-<div>
-<h2 class="title">Suasana Modern</h2>
-<p class="desc">
-Interior modern dengan nuansa hangat membuat pengalaman nongkrong lebih nyaman dan instagramable.
-</p>
-</div>
-</div>
-</section>
-
-<section id="menu">
-<h2 class="title">Menu Favorit</h2>
-
-<div class="menu-grid">
-
-<div class="menu-card">
-<img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=1200&auto=format&fit=crop">
-<h3>Kopi Susu Aren</h3>
-<p>Kopi creamy dengan gula aren premium khas Nara Coffee.</p>
-<div class="price">Rp18.000</div>
+<div class="header">
+    <div class="logo"><h1>☕ Cafe Bahagia</h1></div>
+    <div class="nav">
+        <button id="homeBtn" class="nav-active">Beranda</button>
+        <button id="menuBtn">Menu</button>
+        <button id="orderNavBtn" class="order-nav">Pesan Online</button>
+    </div>
 </div>
 
-<div class="menu-card">
-<img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200&auto=format&fit=crop">
-<h3>Cappuccino</h3>
-<p>Perpaduan espresso dan susu dengan foam lembut.</p>
-<div class="price">Rp22.000</div>
+<div id="homeSection">
+    <div class="hero">
+        <div class="hero-content">
+            <h2>Kopi Segar & Pastry</h2>
+            <p>Pesan dari sekarang, hindari antrian</p>
+            <button class="btn-primary" id="heroOrderBtn">Pesan Sekarang</button>
+        </div>
+    </div>
 </div>
 
-<div class="menu-card">
-<img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?q=80&w=1200&auto=format&fit=crop">
-<h3>Matcha Latte</h3>
-<p>Minuman matcha premium dengan rasa creamy dan segar.</p>
-<div class="price">Rp20.000</div>
+<div id="menuSection" class="hidden">
+    <h2 class="section-title">🍽️ Menu Kami</h2>
+    <div class="menu-grid" id="menuGrid"></div>
+    <div class="total-section">
+        <div class="total-card">
+            <div class="total-text"><span>Total Pesanan:</span><span class="total-amount" id="totalAmount">Rp 0</span></div>
+            <button class="pesan-btn" id="checkoutBtn">📝 Pesan Sekarang</button>
+        </div>
+    </div>
 </div>
 
-<div class="menu-card">
-<img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop">
-<h3>Croissant</h3>
-<p>Pastry buttery lembut cocok untuk teman ngopi.</p>
-<div class="price">Rp15.000</div>
+<div id="checkoutSection" class="hidden">
+    <div class="checkout-section">
+        <div class="checkout-container">
+            <button id="backToMenuBtn" style="background:none; border:none; color:#c47a2e; margin-bottom:16px; cursor:pointer;">← Kembali ke Menu</button>
+            <h2 class="section-title">📋 Lengkapi Pesanan</h2>
+            <div id="orderSummary"></div>
+            <form id="checkoutForm">
+                <div class="form-group"><label>Nama Anda *</label><input type="text" id="customerName" required></div>
+                <div class="form-group"><label>Nomor Meja *</label><input type="text" id="tableNumber" placeholder="Contoh: Meja 5" required></div>
+                <div class="form-group"><label>Catatan (opsional)</label><textarea id="notes" rows="2"></textarea></div>
+                <div class="form-group"><label>Metode Bayar *</label>
+                    <div id="metodeKasir" class="metode-card active">💰 Bayar di Kasir <small style="display:block;">Datang ke kasir untuk bayar</small></div>
+                    <div id="metodeMeja" class="metode-card">🍽️ Bayar di Meja <small style="display:block;">Pelayan datang dengan invoice</small></div>
+                </div>
+                <button type="submit" class="submit-btn">✅ Konfirmasi Pesanan</button>
+            </form>
+        </div>
+    </div>
 </div>
 
+<div class="footer">
+    <p>© 2025 Cafe Bahagia | Dibuat oleh <strong>Deby Verona</strong></p>
 </div>
-</section>
 
-<section id="gallery">
-<h2 class="title">Cafe Gallery</h2>
+<script>
+    const products = [
+        { id: 1, name: "Espresso", price: 35000, image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100&h=100&fit=crop", desc: "Double shot, klasik" },
+        { id: 2, name: "Cappuccino", price: 40000, image: "https://images.unsplash.com/photo-1534778101976-62847782c2e1?w=100&h=100&fit=crop", desc: "Lembut, seimbang" },
+        { id: 3, name: "Latte", price: 45000, image: "https://images.unsplash.com/photo-1570968915860-54d5c92fa5f7?w=100&h=100&fit=crop", desc: "Klasik / Caramel" },
+        { id: 4, name: "Croissant", price: 22000, image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=100&h=100&fit=crop", desc: "Buttery, renyah" },
+        { id: 5, name: "Cupcake", price: 25000, image: "https://images.unsplash.com/photo-1587668178277-295251f900ce?w=100&h=100&fit=crop", desc: "Frosting coklat" },
+        { id: 6, name: "Avocado Toast", price: 42000, image: "https://images.unsplash.com/photo-1603046891744-1f76eb10eecf?w=100&h=100&fit=crop", desc: "Alpukat segar" }
+    ];
+    let qty = {};
+    let currentPage = "home";
+    let metode = "kasir";
 
-<div class="gallery">
-<img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=1200&auto=format&fit=crop">
-<img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=1200&auto=format&fit=crop">
-<img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?q=80&w=1200&auto=format&fit=crop">
-</div>
-</section>
-
-<section id="kontak">
-<h2 class="title">Kontak</h2>
-
-<div class="contact-box">
-<p>
-📍 Bogor, Jawa Barat
-<br><br>
-📞 0821-3087-2054
-<br><br>
-📸 Instagram: @naracoffee
-<br><br>
-🕒 Setiap Hari • 10.00 - 23.00
-</p>
-</div>
-</section>
-
-<footer>
-<p>© 2026 Nara Coffee — All Rights Reserved.</p>
-</footer>
-
-<a href="https://wa.me/6282130872054" target="_blank" class="float-btn">
-Chat WhatsApp
-</a>
-
+    function updateTotal() { let t = 0; for (let id in qty) t += products.find(p => p.id == id).price * qty[id]; document.getElementById('totalAmount').innerText = "Rp " + t.toLocaleString(); return t; }
+    function renderMenu() {
+        const container = document.getElementById('menuGrid');
+        container.innerHTML = '';
+        products.forEach(p => {
+            const jml = qty[p.id] || 0;
+            const div = document.createElement('div');
+            div.className = 'menu-card';
+            div.innerHTML = `<div class="menu-img"><img src="${p.image}"></div><div class="menu-info"><h3>${p.name}</h3><p>${p.desc}</p><div class="menu-price">Rp ${p.price.toLocaleString()}</div><div class="qty-control"><button class="qty-minus" data-id="${p.id}">-</button><span>${jml}</span><button class="qty-plus" data-id="${p.id}">+</button></div></div>`;
+            container.appendChild(div);
+        });
+        document.querySelectorAll('.qty-plus').forEach(btn => btn.onclick = () => { let id = btn.dataset.id; qty[id] = (qty[id] || 0) + 1; renderMenu(); updateTotal(); });
+        document.querySelectorAll('.qty-minus').forEach(btn => btn.onclick = () => { let id = btn.dataset.id; if (qty[id] > 0) qty[id]--; if (qty[id] === 0) delete qty[id]; renderMenu(); updateTotal(); });
+        updateTotal();
+    }
+    function showPage(page) {
+        currentPage = page;
+        document.getElementById('homeSection').classList.add('hidden');
+        document.getElementById('menuSection').classList.add('hidden');
+        document.getElementById('checkoutSection').classList.add('hidden');
+        if (page === 'home') document.getElementById('homeSection').classList.remove('hidden');
+        if (page === 'menu') { document.getElementById('menuSection').classList.remove('hidden'); renderMenu(); }
+        if (page === 'checkout') {
+            document.getElementById('checkoutSection').classList.remove('hidden');
+            let total = 0, html = '<h3>Ringkasan:</h3>';
+            for (let id in qty) { let p = products.find(p => p.id == id); let sub = p.price * qty[id]; total += sub; html += `<p>${p.name} x${qty[id]} = Rp ${sub.toLocaleString()}</p>`; }
+            html += `<p><strong>Total: Rp ${total.toLocaleString()}</strong></p>`;
+            document.getElementById('orderSummary').innerHTML = html;
+        }
+        document.getElementById('homeBtn').classList.remove('nav-active');
+        document.getElementById('menuBtn').classList.remove('nav-active');
+        if (page === 'home') document.getElementById('homeBtn').classList.add('nav-active');
+        if (page === 'menu') document.getElementById('menuBtn').classList.add('nav-active');
+    }
+    document.getElementById('homeBtn').onclick = () => showPage('home');
+    document.getElementById('menuBtn').onclick = () => showPage('menu');
+    document.getElementById('orderNavBtn').onclick = () => showPage('menu');
+    document.getElementById('heroOrderBtn').onclick = () => showPage('menu');
+    document.getElementById('checkoutBtn').onclick = () => { if (Object.keys(qty).length === 0) alert("Pilih menu dulu!"); else showPage('checkout'); };
+    document.getElementById('backToMenuBtn').onclick = () => showPage('menu');
+    document.getElementById('metodeKasir').onclick = () => { metode = "kasir"; document.getElementById('metodeKasir').classList.add('active'); document.getElementById('metodeMeja').classList.remove('active'); };
+    document.getElementById('metodeMeja').onclick = () => { metode = "meja"; document.getElementById('metodeMeja').classList.add('active'); document.getElementById('metodeKasir').classList.remove('active'); };
+    document.getElementById('checkoutForm').onsubmit = (e) => {
+        e.preventDefault();
+        let nama = document.getElementById('customerName').value, meja = document.getElementById('tableNumber').value;
+        if (!nama) return alert("Nama wajib diisi!");
+        if (!meja) return alert("Nomor meja wajib diisi!");
+        let total = 0; for (let id in qty) total += products.find(p => p.id == id).price * qty[id];
+        alert(`✅ Pesanan berhasil!\nNama: ${nama}\nMeja: ${meja}\nTotal: Rp ${total.toLocaleString()}\nMetode: ${metode === "kasir" ? "Bayar di Kasir" : "Bayar di Meja"}\n\nPesanan akan segera diproses.`);
+        qty = {}; renderMenu(); showPage('home'); document.getElementById('checkoutForm').reset();
+    };
+    showPage('home');
+</script>
 </body>
 </html>
